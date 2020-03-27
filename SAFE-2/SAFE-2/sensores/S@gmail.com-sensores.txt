@@ -1,0 +1,2 @@
+Caidas=true|Pulsometro=true
+false
