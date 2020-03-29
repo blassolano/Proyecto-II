@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Main;
 import model.Paciente;
-import model.Persona;
+import model.User;
 
 
 public class ControlerCambC implements Initializable{
@@ -72,12 +72,12 @@ public class ControlerCambC implements Initializable{
 
 				}
 			}else if(contra1.equals(contra2)) {
-				Map<String, Persona> map;
+				Map<String, User> map;
 				map = Main.leerArchivo();
 				String correo = loginMail.getText();
 				Paciente D = ControlerPaciente.DatosPaciente(correo);
 				String[] Datos = new String[10];
-				Persona Dat = map.get(correo);
+				User Dat = map.get(correo);
 				Datos[0] = contra1;
 				Datos[1] = Dat.getNombre();
 				Datos[2] = Dat.getApellidos();
@@ -85,8 +85,8 @@ public class ControlerCambC implements Initializable{
 				Datos[3] = sf.format(Dat.getFecha());
 				Datos[4] = Dat.getDNI();
 				Datos[5] = Dat.getTelefono();
-				Datos[6] = String.valueOf(D.getCuidadorId());
-				Datos[7] = String.valueOf(D.getFamiliarId());
+//				Datos[6] = String.valueOf(D.getMedicoId());
+//				Datos[7] = String.valueOf(D.getFamiliarId());
 				Datos[8] = D.getHistorial();
 
 				Main.guardar(correo, Datos);
@@ -101,10 +101,10 @@ public class ControlerCambC implements Initializable{
 	@FXML
 	void on_Back_Clicked(ActionEvent event){
 		try {
-			ControladorLogin.VentanaLogin.show();
+			LoginController.VentanaLogin.show();
 			Stage stageA = (Stage) Back.getScene().getWindow();
 		    stageA.close();
-		    /*Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+		    /*Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 	        Scene scene = new Scene(root);
 	        Stage stage = new Stage();
 			//BorderPane root = new BorderPane();

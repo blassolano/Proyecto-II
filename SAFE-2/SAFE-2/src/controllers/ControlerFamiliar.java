@@ -44,11 +44,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.Main;
 import model.Familiar;
-import model.Persona;
+import model.User;
 
 public class ControlerFamiliar implements Initializable {
 	public static Stage VentanaFamiliar = null;
-	public static Persona[] Paciente = null;
+	public static User[] Paciente = null;
 	
 	@FXML
     private MenuButton Nombre;
@@ -121,6 +121,12 @@ public class ControlerFamiliar implements Initializable {
     
     @FXML
     private TabPane TabPlane;
+    
+    private User user;
+
+	public void initData(User user) {
+		this.user = user;
+	}
 
 	public void initialize(URL location, ResourceBundle resources) {
 	       // TODO (don't really need to do anything here).
@@ -128,8 +134,8 @@ public class ControlerFamiliar implements Initializable {
 
 		//Nombre y foto MenuButton
 
-		Nombre.setText(ControladorLogin.PERSONA.getNombre() + " " + ControladorLogin.PERSONA.getApellidos());
-		String DireccionFoto = "Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png";
+		Nombre.setText(user.getNombre() + " " + user.getApellidos());
+		String DireccionFoto = "Imagen/FotoPerfil" + user.getCorreo() + ".png";
 		System.out.println(DireccionFoto);
 		/*try {
 		    Image image = new Image(DireccionFoto);
@@ -138,7 +144,7 @@ public class ControlerFamiliar implements Initializable {
 			e.printStackTrace();
 		}*/
 		try {
-			File dest = new File("src/Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png");
+			File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
 			String thePath = dest.toURI().toURL().toExternalForm();
 		    Image image = new Image(thePath);
 		    Foto.setImage(image);
@@ -155,11 +161,11 @@ public class ControlerFamiliar implements Initializable {
 		String p = null; // ControladorLogin.FAMILIAR.getPaciente().replace(" ","");
 		String[] Pacientes = p.split("\\|");
 		if(Pacientes != null) {
-			Map<String, Persona> map = Main.leerArchivo();
+			Map<String, User> map = Main.leerArchivo();
 			int l = Pacientes.length;
 			System.out.println("Pacientes[0] = " + Pacientes [0]);
 			System.out.println("Numero pacientes " + l);
-			Paciente = new Persona[l];
+			Paciente = new User[l];
 			for(int i = 0; i<l; i++) {
 				System.out.println("Datos paciente " + i + " " + map.get(Pacientes[i]));
 				Paciente[i] = map.get(Pacientes[i]);
@@ -299,11 +305,11 @@ public class ControlerFamiliar implements Initializable {
 			    	}
 		DetectorCaidas1.setDisable(true);
 		OnOfPulsometro.setDisable(true);
-		if(ControladorLogin.FAMILIAR.getGradoControl().equals("3")){
+		if(LoginController.FAMILIAR.getGradoControl().equals("3")){
 			DetectorCaidas1.setDisable(false);
 			OnOfPulsometro.setDisable(false);
 		}
-		if(ControladorLogin.FAMILIAR.getGradoControl().equals("1")){
+		if(LoginController.FAMILIAR.getGradoControl().equals("1")){
 			//TabPlane.getTabs.remove(TabHistorial);
 			TabPlane.getTabs().remove(TabHistorial);
 		}
@@ -379,7 +385,7 @@ public class ControlerFamiliar implements Initializable {
 	    	Stage stageA = (Stage) Nombre.getScene().getWindow();
 
 			stageA.close();
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 	        Scene scene = new Scene(root);
 	        Stage stage = new Stage();
 			//BorderPane root = new BorderPane();
@@ -562,10 +568,10 @@ public class ControlerFamiliar implements Initializable {
     	//String path = NombrePaciente + "chat.txt";
 
     	try {
-    		String path = "chat/" + ControladorLogin.PERSONA.getCorreo() + "-chat.txt";
+    		String path = "chat/" + user.getCorreo() + "-chat.txt";
 			FileWriter fw = new FileWriter(path, true);
 			fw.write(System.lineSeparator());
-			fw.write(ControladorLogin.PERSONA.getNombre());
+			fw.write(user.getNombre());
 			fw.write("\t");
 			fw.write(timeStamp);
 			fw.write("\t");

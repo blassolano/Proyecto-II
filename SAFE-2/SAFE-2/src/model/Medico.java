@@ -1,43 +1,28 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 
- * @author Julio
- *
- */
 
-public class Medico extends Persona {
+
+public class Medico extends User {
 
 	// atributo
-	private List<Long> lstPacienteId;
-	private String especificaciones;
+	private List<Paciente> lstPaciente;
 
-	public Medico(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, String rol,
+	public Medico(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role role,
 			String telefono, List<Long> lstPacienteId, String especificaciones) {
-		super(nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
-		this.lstPacienteId = lstPacienteId;
-		this.especificaciones = especificaciones;
+		super(nombre, apellidos, dNI, correo, contrasena, fecha, role, telefono);
+		this.lstPaciente = new ArrayList<Paciente>();
 	}
 
-	public List<Long> getLstPacienteId() {
-		return lstPacienteId;
+	public List<Paciente> getLstPaciente() {
+		return lstPaciente;
 	}
 
-	public void setLstPacienteId(List<Long> lstPacienteId) {
-		this.lstPacienteId = lstPacienteId;
+	public void setLstPaciente(List<Paciente> lstPaciente) {
+		this.lstPaciente = lstPaciente;
 	}
-
-	public String getEspecificaciones() {
-		return especificaciones;
-	}
-
-	public void setEspecificaciones(String especificaciones) {
-		this.especificaciones = especificaciones;
-	}
-
-	// getters and getters
 
 }

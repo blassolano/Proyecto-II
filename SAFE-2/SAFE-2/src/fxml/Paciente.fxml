@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="476.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <TabPane prefHeight="350.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                  <Tab id="tabsensores" text="SENSORS">
+                     <content>
+                        <AnchorPane style="-fx-background-color: grey;">
+                           <children>
+                              <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Pulsometro" textFill="#0a0a0a">
+                                       <font>
+                                          <Font name="Arial Bold Italic" size="21.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets right="400.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <LineChart fx:id="linechart" prefHeight="377.0" prefWidth="540.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" fx:id="x" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="y" side="LEFT" />
+                                       </yAxis>
+                                    </LineChart>
+                                    <Label alignment="TOP_CENTER" layoutX="37.0" layoutY="258.0" text="Sensor Caja fuerte" textFill="#0a0a0a">
+                                       <font>
+                                          <Font name="Arial Bold Italic" size="21.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets right="320.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextArea fx:id="txtarearfdi" prefHeight="43.0" prefWidth="506.0">
+                                       <VBox.margin>
+                                          <Insets left="20.0" right="200.0" />
+                                       </VBox.margin></TextArea>
+                                    <Label alignment="TOP_CENTER" layoutX="35.0" layoutY="232.0" text="Detector movimiento" textFill="#0a0a0a">
+                                       <font>
+                                          <Font name="Arial Bold Italic" size="21.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="300.0" />
+                                       </padding>
+                                    </Label>
+                                    <TextArea fx:id="txtareapresencia">
+                                       <VBox.margin>
+                                          <Insets left="20.0" right="200.0" />
+                                       </VBox.margin></TextArea>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                <Tab fx:id="TabHistorial" text="MEDICAL HISTORY">
+                  <content>
+                        <BorderPane>
+                           <center>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="historialStreaming" editable="false" prefHeight="284.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </center>
+                           <top>
+                              <HBox BorderPane.alignment="CENTER_LEFT" />
+                           </top>
+                        </BorderPane>
+                  </content>
+                </Tab>
+                  <Tab text="RELATIVE INFORMATION">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane prefHeight="409.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <bottom>
+                                    <VBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button fx:id="newAccount" mnemonicParsing="false" onAction="#on_newAccount_Clicked" text="Add relative" textAlignment="CENTER" />
+                                       </children>
+                                    </VBox>
+                                 </bottom>
+                                 <center>
+                                    <HBox alignment="CENTER" prefHeight="382.0" prefWidth="435.0" style="-fx-background-color: #DDDDDD;" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <ImageView fx:id="FotoPaciente" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="200.0" prefWidth="300.0">
+                                             <children>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="40.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="175.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name(s):" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="NombrePaciente" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Surname(s):" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="Apellido1" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Birth date:" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="FechaNacimiento1" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="DNI1" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="Correo1" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <HBox prefHeight="20.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number:" />
+                                                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                      <Text fx:id="NumTelefono1" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </center>
+                                 <left>
+                                    <VBox prefHeight="200.0" prefWidth="75.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox prefHeight="175.0" prefWidth="200.0" />
+                                          <HBox alignment="BOTTOM_RIGHT" prefHeight="175.0" prefWidth="200.0">
+                                             <children>
+                                                <Button fx:id="Previous" mnemonicParsing="false" onAction="#On_Previous_Clicked" prefHeight="25.0" prefWidth="75.0" text="Previous" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </left>
+                                 <right>
+                                    <VBox prefHeight="382.0" prefWidth="75.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox prefHeight="175.0" prefWidth="200.0" />
+                                          <HBox alignment="BOTTOM_LEFT" prefHeight="175.0" prefWidth="200.0">
+                                             <children>
+                                                <Button fx:id="Next" mnemonicParsing="false" onAction="#On_Next_Clicked" prefHeight="25.0" prefWidth="75.0" text="Next" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </right>
+                              </BorderPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                   </Tab>
+                  <Tab text="CARETAKER">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                                          <ImageView fx:id="FotoCuidador" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="300.0">
+                                       <children>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="NombreCuidador" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Surname(s):" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="Apellido" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Birthdate:" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="FechaNacimiento" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="DNI" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="Correo" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                          <HBox prefHeight="20.0" prefWidth="300.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number:" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Text fx:id="NumTelefono" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+                  <Tab text="CHAT">
+                     <content>
+                        <BorderPane fx:id="bp">
+                           <center>
+                              <AnchorPane>
+                                 <children>
+                                    <TextArea fx:id="chatStreaming" editable="false" prefHeight="377.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </center>
+                           <bottom>
+                              <AnchorPane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TextField fx:id="mensaje" alignment="BOTTOM_LEFT" prefHeight="27.0" prefWidth="677.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="105.0" />
+                                    <Button fx:id="enviar" layoutX="491.0" mnemonicParsing="false" onAction="#enviarActioned" prefHeight="27.0" prefWidth="105.0" text="Send" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </bottom>
+                           <top>
+                              <HBox BorderPane.alignment="CENTER_LEFT">
+                                 <children>
+                                    <MenuButton fx:id="menuChat" mnemonicParsing="false" text="Chat" />
+                                 </children>
+                              </HBox>
+                           </top>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <top>
+            <MenuButton fx:id="Nombre" mnemonicParsing="false" text="MenuButton" BorderPane.alignment="TOP_LEFT">
+              <items>
+                <MenuItem fx:id="Perfil" mnemonicParsing="false" onAction="#on_Perfil_Clicked" text="Profile" />
+                <MenuItem fx:id="LogOut" mnemonicParsing="false" onAction="#on_LogOut_Clicked" text="Sign Out" />
+              </items>
+               <graphic>
+                  <ImageView fx:id="Foto" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </MenuButton>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -75,7 +75,7 @@ public class ControllerReg implements Initializable{
 		Stage stageA = (Stage) Hyperlog.getScene().getWindow();
 	    stageA.close();
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();

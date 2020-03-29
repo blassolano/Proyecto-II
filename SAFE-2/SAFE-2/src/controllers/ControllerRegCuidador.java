@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Main;
-import model.Persona;
+import model.User;
 
 public class ControllerRegCuidador implements Initializable{
 	@FXML
@@ -58,6 +58,13 @@ public class ControllerRegCuidador implements Initializable{
 
     @FXML
     private TextField registerName;
+    
+    private User user;
+
+	public void initData(User user) {
+		this.user = user;
+	}
+	
 	public void initialize(URL location, ResourceBundle resources) {
 	       // TODO (don't really need to do anything here).
 	}
@@ -77,7 +84,7 @@ public class ControllerRegCuidador implements Initializable{
 	void On_Register_Clicked(ActionEvent event){
 //		System.out.println(Main1.ControladorLogin.ADMINISTRADOR.getCuidador());
 		String correo;
-		Map<String, Persona> map = new LinkedHashMap<String,Persona>();
+		Map<String, User> map = new LinkedHashMap<String,User>();
 		String[] Datos = new String[11];
 		correo = registerEmail.getText();
 		String nombre = registerName.getText();
@@ -95,7 +102,7 @@ public class ControllerRegCuidador implements Initializable{
 				fecha = fechad.format(formatter);
 
 				map = Main.leerArchivo();
-				Persona DatosP = map.get(correo);
+				User DatosP = map.get(correo);
 				if(DatosP != null) {
 					System.out.println("This email adress already exists in the system");
 					TextError.setText("Username already taken");
@@ -127,7 +134,7 @@ public class ControllerRegCuidador implements Initializable{
 					Datos[4] = "Cuidador";
 					Datos[5] = DNI;
 					Datos[6] = telefono;
-					Datos[7] = ControladorLogin.PERSONA.getCorreo();
+					Datos[7] = user.getCorreo();
 					Datos[8] = null;
 					Datos[9] = null;
 					System.out.println(correo + Datos[0] + Datos[1] + Datos[2] + Datos[3] + Datos[4] + Datos[5]+ Datos[6]);
@@ -147,16 +154,16 @@ public class ControllerRegCuidador implements Initializable{
     private void CambPaciente(String Correo) {
 		// TODO Auto-generated method stub
     	String[] Datos = new String[10];
-    	String correo = ControladorLogin.PERSONA.getCorreo();
-    	Datos[0] = ControladorLogin.PERSONA.getContrasena();
-    	Datos[1] = ControladorLogin.PERSONA.getNombre();
-    	Datos[2] = ControladorLogin.PERSONA.getApellidos();
+    	String correo = user.getCorreo();
+    	Datos[0] = user.getContrasena();
+    	Datos[1] = user.getNombre();
+    	Datos[2] = user.getApellidos();
     	
     	SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-    	Datos[3] = sf.format(ControladorLogin.PERSONA.getFecha());
-    	Datos[4] = ControladorLogin.PERSONA.getRol();
-    	Datos[5] = ControladorLogin.PERSONA.getDNI();
-    	Datos[6] = ControladorLogin.PERSONA.getTelefono();
+    	Datos[3] = sf.format(user.getFecha());
+    	Datos[4] = user.getRole().getRoleName();
+    	Datos[5] = user.getDNI();
+    	Datos[6] = user.getTelefono();
     	Datos[7] = null;
 //    	if(!Main1.ControladorLogin.ADMINISTRADOR.getCuidador().equals("null")){
 //    		Datos[8] = Main1.ControladorLogin.ADMINISTRADOR.getCuidador() + "|" + Correo;

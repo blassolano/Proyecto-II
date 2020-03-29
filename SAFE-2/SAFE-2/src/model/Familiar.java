@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class Familiar extends Persona {
+public class Familiar extends User {
 
 	// Atributos
 
@@ -10,8 +10,8 @@ public class Familiar extends Persona {
 	private String gradoControl;
 
 	public Familiar(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha,
-			String rol, String telefono, long pacienteId, String gradoControl) {
-		super(nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
+			Role role, String telefono, long pacienteId, String gradoControl) {
+		super(nombre, apellidos, dNI, correo, contrasena, fecha, role, telefono);
 		this.pacienteId = pacienteId;
 		this.gradoControl = gradoControl;
 	}

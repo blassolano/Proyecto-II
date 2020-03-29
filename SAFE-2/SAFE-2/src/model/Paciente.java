@@ -1,42 +1,39 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
-/**
- * 
- * @author Julio
- *
- */
 
-public class Paciente extends Persona {
-
-	// Atributos
-	private long cuidadorId;
-	private long familiarId;
+public class Paciente extends User {
+	private Medico medico;
+	private List<Familiar> lstFamiliar;
 	private String historial;
+	
+	public Paciente(User user) {
+		super(user.getNombre(), user.getApellidos(), user.getDNI(), user.getCorreo(), user.getContrasena(), user.getFecha(), user.getRole(), user.getTelefono());
+	}
 
-	public Paciente(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha,
-			String rol, String telefono, long cuidadorId, long familiarId, String historial) {
+	public Paciente(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role rol,
+			String telefono, Medico medico, String historial) {
 		super(nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
-		this.cuidadorId = cuidadorId;
-		this.familiarId = familiarId;
+		this.medico = medico;
 		this.historial = historial;
 	}
 
-	public long getCuidadorId() {
-		return cuidadorId;
+	public Medico getMedico() {
+		return medico;
 	}
 
-	public void setCuidadorId(long cuidadorId) {
-		this.cuidadorId = cuidadorId;
+	public void setMedico(Medico medico) {
+		this.medico = medico;
 	}
 
-	public long getFamiliarId() {
-		return familiarId;
+	public List<Familiar> getLstFamiliar() {
+		return lstFamiliar;
 	}
 
-	public void setFamiliarId(long familiarId) {
-		this.familiarId = familiarId;
+	public void setLstFamiliar(List<Familiar> lstFamiliar) {
+		this.lstFamiliar = lstFamiliar;
 	}
 
 	public String getHistorial() {
@@ -47,6 +44,13 @@ public class Paciente extends Persona {
 		this.historial = historial;
 	}
 
-	// getter and getters
+	@Override
+	public String toString() {
+		return "Paciente [id=" + id + ", DNI=" + DNI + ", nombre=" + this.nombre + ", apellidos=" + apellidos + ", correo="
+				+ correo + ", contrasena=" + contrasena + ", fecha=" + fecha + ", role=" + role + ", telefono="
+				+ telefono + ", medico=" + medico + ", lstFamiliar=" + lstFamiliar + ", historial=" + historial +"]\n";
+	}
+
+	
 
 }

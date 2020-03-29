@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Main;
+import model.User;
 
 
 public class ControlerCambioPerfil implements Initializable{
@@ -53,6 +54,12 @@ public class ControlerCambioPerfil implements Initializable{
     
     @FXML
     private TextField registerPhone;
+    
+    private User user;
+
+	public void initData(User user) {
+		this.user = user;
+	}
 
 		    
 	public void initialize(URL location, ResourceBundle resources) {
@@ -71,7 +78,7 @@ public class ControlerCambioPerfil implements Initializable{
 		}*/
 		
 		try {
-			File dest = new File("src/Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png");
+			File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
 			String thePath = dest.toURI().toURL().toExternalForm();
 		    Image image = new Image(thePath);
 		    Foto.setImage(image);
@@ -81,9 +88,9 @@ public class ControlerCambioPerfil implements Initializable{
 			e1.printStackTrace();
 		}
 		
-		registerName.setPromptText( ControladorLogin.PERSONA.getNombre());
-		registerSurname.setPromptText( ControladorLogin.PERSONA.getApellidos());
-		registerPhone.setPromptText( ControladorLogin.PERSONA.getTelefono());
+		registerName.setPromptText( user.getNombre());
+		registerSurname.setPromptText( user.getApellidos());
+		registerPhone.setPromptText( user.getTelefono());
 	    //Stage stageA = (Stage) DoneButton.getScene().getWindow();
 	   
 	}
@@ -100,7 +107,7 @@ public class ControlerCambioPerfil implements Initializable{
 	}
 	@FXML
     void On_ChangePicture_Clicked(ActionEvent event) {
-		String DireccionFoto = "Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png";
+		String DireccionFoto = "Imagen/FotoPerfil" + user.getCorreo() + ".png";
 	    File f = new File(DireccionFoto);
 		JFileChooser file=new JFileChooser();  
 		//file.addChoosableFileFilter(new FileFilter("PNG", "*.png"));
@@ -117,7 +124,7 @@ public class ControlerCambioPerfil implements Initializable{
 
 		}
 		//File source = new File("/Users/pankaj/tmp/sourceApache.avi");
-		File dest = new File("src/Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png");
+		File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
 		try {
 			copyFileUsingJava7Files(abre, dest);
 		} catch (IOException e) {
@@ -147,23 +154,23 @@ public class ControlerCambioPerfil implements Initializable{
 			
 		}else {
 			//ClassPaciente D = ControlerPaciente.DatosPaciente(correo);
-			Datos[0] = ControladorLogin.PERSONA.getContrasena();
+			Datos[0] = user.getContrasena();
 			if(nombre.equals("")) {
-				Datos[1] = ControladorLogin.PERSONA.getNombre();
+				Datos[1] = user.getNombre();
 			}else {
 				Datos[1] = nombre;
 			}
 			if(apellido.equals("")) {
-				Datos[2] = ControladorLogin.PERSONA.getApellidos();
+				Datos[2] = user.getApellidos();
 			}else {
 				Datos[2] = apellido;
 			}
 			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-			Datos[3] = sf.format(ControladorLogin.PERSONA.getFecha());
+			Datos[3] = sf.format(user.getFecha());
 			Datos[4] = "Paciente";
-			Datos[5] = ControladorLogin.PERSONA.getDNI();
+			Datos[5] = user.getDNI();
 			if(telefono.equals("")) {
-				Datos[6] = ControladorLogin.PERSONA.getTelefono();
+				Datos[6] = user.getTelefono();
 			}else {
 				Datos[6] = telefono;
 			}
@@ -186,7 +193,7 @@ public class ControlerCambioPerfil implements Initializable{
 //			}
 
 			//System.out.println(correo + Datos[0] + Datos[1] + Datos[2] + Datos[3] + Datos[4] + Datos[5]+ Datos[6]);
-			Main.guardar(ControladorLogin.PERSONA.getCorreo(), Datos);
+			Main.guardar(user.getCorreo(), Datos);
 			On_Back_Clicked(null);
 		}
 	}

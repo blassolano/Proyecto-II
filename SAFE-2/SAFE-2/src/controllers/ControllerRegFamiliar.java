@@ -26,7 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Main;
-import model.Persona;
+import model.User;
 
 
 public class ControllerRegFamiliar implements Initializable{
@@ -75,7 +75,11 @@ public class ControllerRegFamiliar implements Initializable{
     @FXML
     private RadioButton Nivel3;
 
+    private User user;
 
+	public void initData(User user) {
+		this.user = user;
+	}
 
 	public void initialize(URL location, ResourceBundle resources) {
 	       // TODO (don't really need to do anything here).
@@ -87,7 +91,7 @@ public class ControllerRegFamiliar implements Initializable{
 	    stageA.close();
 	    ControlerPaciente.VentanaPaciente.show();
 		/*try {
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -106,7 +110,7 @@ public class ControllerRegFamiliar implements Initializable{
 	void On_Register_Clicked(ActionEvent event){
 
 		String correo;
-		Map<String, Persona> map = new LinkedHashMap<String, Persona>();
+		Map<String, User> map = new LinkedHashMap<String, User>();
 		String[] Datos = new String[11];
 		correo = registerEmail.getText();
 		String nombre = registerName.getText();
@@ -144,7 +148,7 @@ public class ControllerRegFamiliar implements Initializable{
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 				String fecha = fechad.format(formatter);
 				map = Main.leerArchivo();
-				Persona DatosP = map.get(correo);
+				User DatosP = map.get(correo);
 				if(DatosP != null) {
 					System.out.println("Este correo ya existe ");
 					TextError.setText("User already exist");
@@ -176,7 +180,7 @@ public class ControllerRegFamiliar implements Initializable{
 					Datos[4] = "Familiar";
 					Datos[5] = DNI;
 					Datos[6] = telefono;
-					Datos[7] = ControladorLogin.PERSONA.getCorreo();
+					Datos[7] = user.getCorreo();
 					Datos[8] = nivel;
 					Datos[9] = null;
 					System.out.println(correo + Datos[0] + Datos[1] + Datos[2] + Datos[3] + Datos[4] + Datos[5]+ Datos[6]);
@@ -199,7 +203,7 @@ public class ControllerRegFamiliar implements Initializable{
     private void CambFamiliares(String Correo) {
 		// TODO Auto-generated method stub
     	String[] Datos = new String[10];
-    	String correo = ControladorLogin.PERSONA.getCorreo();
+    	String correo = user.getCorreo();
 //    	Datos[0] = ControladorLogin.PERSONA.getContrasena();
 //    	Datos[1] = ControladorLogin.PERSONA.getNombre();
 //    	Datos[2] = ControladorLogin.PERSONA.getApellidos();

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import Conexion.DatosSensorDAO;
-import Conexion.Sensores;
+import dao.DatosSensorDAO;
+import dao.Sensores;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +36,7 @@ import javafx.stage.StageStyle;
 import main.Main;
 import model.DatosSensor;
 import model.Paciente;
-import model.Persona;
+import model.User;
 
 
 public class ControlerPaciente implements Initializable{
@@ -243,8 +243,14 @@ public class ControlerPaciente implements Initializable{
 	    @FXML
 	    private ImageView Foto;
 	    
-	    Persona PERSONA;
-	    Persona persona;
+	    User PERSONA;
+	    User persona;
+	    
+	    private User user;
+
+		public void initData(User user) {
+			this.user = user;
+		}
 	    
 	    public XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
 		public int contadorGrafica = 0;
@@ -547,7 +553,7 @@ public class ControlerPaciente implements Initializable{
 	}
 
 
-	private void recogerSensores(Persona persona) {
+	private void recogerSensores(User persona) {
 		txtarearfdi.clear();
 		txtareapresencia.clear();
 		linechart.getData().clear();
@@ -634,7 +640,7 @@ public class ControlerPaciente implements Initializable{
     		//Main1.Main3.FotoPerfil = null;
 	    	Stage stageA = (Stage) Nombre.getScene().getWindow();
 			stageA.close();
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 	        Scene scene = new Scene(root);
 	        Stage stage = new Stage();
 			stage.setScene(scene);
@@ -837,7 +843,7 @@ public class ControlerPaciente implements Initializable{
     		String path ="chat/"+ CorreoChat + "-chat.txt";
 			FileWriter fw = new FileWriter(path, true);
 			fw.write(System.lineSeparator());
-			fw.write(ControladorLogin.PERSONA.getNombre());
+			fw.write(user.getNombre());
 			fw.write("\t");
 			fw.write(timeStamp);
 			fw.write("\t");
@@ -858,17 +864,17 @@ public class ControlerPaciente implements Initializable{
 	@FXML
     void On_Previous_Clicked(){
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		String[] p = mapC.get(ControladorLogin.PERSONA.getCorreo());
+		String[] p = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo1.getText();
 		if(!p[2].equals("null")) {
 			p[2] = p[2].replace(" ","");
 			String[] Pacientes = p[2].split("\\|");
 
-			Map<String, Persona> map = Main.leerArchivo();
+			Map<String, User> map = Main.leerArchivo();
 			int l = Pacientes.length;
 			System.out.println("Pacientes[0] = " + Pacientes [0]);
 			System.out.println("Numero pacientes " + l);
-			Persona[] Paciente = new Persona[l];
+			User[] Paciente = new User[l];
 			int numPac = 0;
 			for(int i = 0; i<l; i++) {
 				System.out.println("Datos paciente " + i + " " + map.get(Pacientes[i]));
@@ -910,17 +916,17 @@ public class ControlerPaciente implements Initializable{
 	@FXML
     void On_Next_Clicked(){
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		String[] p = mapC.get(ControladorLogin.PERSONA.getCorreo());
+		String[] p = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo1.getText();
 		if(!p[2].equals("null")) {
 			p[2] = p[2].replace(" ","");
 			String[] Pacientes = p[2].split("\\|");
 
-			Map<String, Persona> map = Main.leerArchivo();
+			Map<String, User> map = Main.leerArchivo();
 			int l = Pacientes.length;
 			//System.out.println("Pacientes[0] = " + Pacientes [0]);
 			//System.out.println("Numero pacientes " + l);
-			Persona[] Paciente = new Persona[l];
+			User[] Paciente = new User[l];
 			int numPac = 0;
 			for(int i = 0; i<l; i++) {
 				//System.out.println("Datos paciente " + i + " " + map.get(Pacientes[i]));
@@ -961,7 +967,7 @@ public class ControlerPaciente implements Initializable{
 	}
 
 
-	public void setConexionYPaciente(Persona persona) {
+	public void setConexionYPaciente(User persona) {
 		this.persona = persona;
 		
 		

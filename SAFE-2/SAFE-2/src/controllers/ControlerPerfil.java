@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import main.Main;
+import model.User;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -56,6 +57,12 @@ public class ControlerPerfil implements Initializable {
 
 	    @FXML
 	    private ImageView Foto;
+	    
+	    private User user;
+
+		public void initData(User user) {
+			this.user = user;
+		}
 
 	    public void initialize(URL location, ResourceBundle resources) {
 		       // TODO (don't really need to do anything here).
@@ -73,7 +80,7 @@ public class ControlerPerfil implements Initializable {
 	    		System.out.println(e);
 	    	}*/
 			try {
-				File dest = new File("src/Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png");
+				File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
 				String thePath = dest.toURI().toURL().toExternalForm();
 			    Image image = new Image(thePath);
 			    Foto.setImage(image);
@@ -84,13 +91,13 @@ public class ControlerPerfil implements Initializable {
 			}
 
 
-	    	Nombre.setText(ControladorLogin.PERSONA.getNombre());
-	    	Apellido.setText(ControladorLogin.PERSONA.getApellidos());
-	    	Correo.setText(ControladorLogin.PERSONA.getCorreo());
-	    	DNI.setText(ControladorLogin.PERSONA.getDNI());
+	    	Nombre.setText(user.getNombre());
+	    	Apellido.setText(user.getApellidos());
+	    	Correo.setText(user.getCorreo());
+	    	DNI.setText(user.getDNI());
 			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-	    	Fecha.setText(sf.format((ControladorLogin.PERSONA.getFecha())));
-	    	Numero.setText(ControladorLogin.PERSONA.getTelefono());
+	    	Fecha.setText(sf.format((user.getFecha())));
+	    	Numero.setText(user.getTelefono());
 
 		    Main.imagenPerfilControladorPerfil = Foto;
 		}

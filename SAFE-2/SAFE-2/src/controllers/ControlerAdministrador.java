@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.Main;
 import model.Administrador;
-import model.Persona;
+import model.User;
 
 
 public class ControlerAdministrador implements Initializable{
@@ -96,12 +96,18 @@ public class ControlerAdministrador implements Initializable{
     @FXML
     private MenuButton PacientesCuidadores;
     
+    private User user;
+
+	public void initData(User user) {
+		this.user = user;
+	}
+    
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO (don't really need to do anything here).
 		//Menu buton principal
-		Nombre.setText(ControladorLogin.PERSONA.getNombre() + " " + ControladorLogin.PERSONA.getApellidos());
+		Nombre.setText(user.getNombre() + " " + user.getApellidos());
 		try {
-			File dest = new File("src/Imagen/FotoPerfil" + ControladorLogin.PERSONA.getCorreo() + ".png");
+			File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
 			String thePath = dest.toURI().toURL().toExternalForm();
 		    Image image = new Image(thePath);
 		    Foto.setImage(image);
@@ -114,17 +120,17 @@ public class ControlerAdministrador implements Initializable{
 		// Datos cuidadores
 		
 					Map<String, String[]> mapC = Main.leerArchivoClase();
-					String[] c = mapC.get(ControladorLogin.PERSONA.getCorreo());
+					String[] c = mapC.get(user.getCorreo());
 					String CorreoAnt = Correo.getText();
 					if(!c[2].equals("null")) {
 						c[2] = c[2].replace(" ","");
 						String[] cuidadores = c[2].split("\\|");
 
-						Map<String, Persona> map = Main.leerArchivo();
+						Map<String, User> map = Main.leerArchivo();
 						int l = cuidadores.length;
 						System.out.println("Pacientes[0] = " + cuidadores [0]);
 						System.out.println("Numero pacientes " + l);
-						Persona[] Cuidador = new Persona[l];
+						User[] Cuidador = new User[l];
 						for(int i = 0; i<l; i++) {
 							System.out.println("Datos paciente " + i + " " + map.get(cuidadores[i]));
 							Cuidador[i] = map.get(cuidadores[i]);
@@ -209,7 +215,7 @@ public class ControlerAdministrador implements Initializable{
 			//Main1.Main3.FotoPerfil = null;
 			Stage stageA = (Stage) Nombre.getScene().getWindow();
 			stageA.close();
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			//BorderPane root = new BorderPane();
@@ -256,16 +262,16 @@ public class ControlerAdministrador implements Initializable{
 	void On_Eliminar_Clicked(ActionEvent event){
 		CuidadoresDisponibles.getItems().clear();
 		String correo = TextoCorreo.getText();
-		Map<String, Persona> map = Main.leerArchivo();
+		Map<String, User> map = Main.leerArchivo();
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		if(map.containsKey(correo) && !correo.equals(ControladorLogin.PERSONA.getCorreo())){
+		if(map.containsKey(correo) && !correo.equals(user.getCorreo())){
 			//ClassPersona Datos = map.get(Key);
 			String[] DatosClase = mapC.get(correo);
 			String Creador = DatosClase[1];
 			String Creado = DatosClase[2];
-			Persona Datos = map.get(correo);
-			if(!Datos.getRol().equals("Cuidador") || (Datos.getRol().equals("Cuidador") && Creado.equals("null"))) {
-				System.out.println(Datos.getRol() + "      " + Creado);
+			User Datos = map.get(correo);
+			if(!Datos.getRole().getRoleName().equals("Cuidador") || (Datos.getRole().getRoleName().equals("Cuidador") && Creado.equals("null"))) {
+				System.out.println(Datos.getRole().getRoleName() + "      " + Creado);
 				if(!Creado.equals("null")){
 					Creado = Creado.replace(" " , "");
 					String[] Pacientes = Creado.split("\\|");
@@ -275,7 +281,7 @@ public class ControlerAdministrador implements Initializable{
 					}
 				}
 				String[] BB = new String[11];
-				Persona DatosCreador = map.get(Creador);
+				User DatosCreador = map.get(Creador);
 				BB[0] = DatosCreador.getContrasena();
 				BB[1] = DatosCreador.getNombre();
 				BB[2] = DatosCreador.getApellidos();
@@ -283,7 +289,7 @@ public class ControlerAdministrador implements Initializable{
 				SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 				Date fecha = DatosCreador.getFecha();
 				BB[3] =sf.format(fecha);
-				BB[4] = DatosCreador.getRol();
+				BB[4] = DatosCreador.getRole().getRoleName();
 				BB[5] = DatosCreador.getDNI();
 				BB[6] = DatosCreador.getTelefono();
 
@@ -320,7 +326,7 @@ public class ControlerAdministrador implements Initializable{
 
 	private void BorrarCuenta(String correo) {
 		// TODO Auto-generated method stub
-		Map<String, Persona> map = Main.leerArchivo();
+		Map<String, User> map = Main.leerArchivo();
 		Map<String, String[]> mapC = Main.leerArchivoClase();
 		if(map.containsKey(correo)){
 			System.out.println(correo);
@@ -334,7 +340,7 @@ public class ControlerAdministrador implements Initializable{
 				FileWriter f = new FileWriter(text);
 				while(it.hasNext()) {
 					String Key = (String) it.next();
-					Persona Datos = map.get(Key);
+					User Datos = map.get(Key);
 					String[] DatosClase = mapC.get(Key);
 					if(!Key.equals(correo)){
 
@@ -346,7 +352,7 @@ public class ControlerAdministrador implements Initializable{
 						SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 						Date fecha = Datos.getFecha();
 						f.write(sf.format(fecha) + "\n" );
-						f.write(Datos.getRol() + "\n" );
+						f.write(Datos.getRole().getRoleName() + "\n" );
 						f.write(Datos.getDNI() + "\n" );
 						f.write(Datos.getTelefono() + "\n" );
 
@@ -357,11 +363,11 @@ public class ControlerAdministrador implements Initializable{
 					}else {
 					File Borrar = new File("src/Imagen/FotoPerfil" + correo + ".png");
 					Borrar.delete();
-					if(Datos.getRol().equals("Paciente") || Datos.getRol().equals("Familiar")) {
+					if(Datos.getRole().getRoleName().equals("Paciente") || Datos.getRole().getRoleName().equals("Familiar")) {
 							
 							Borrar = new File("chat/" + correo + "-chat.txt");
 							Borrar.delete();
-						if(Datos.getRol().equals("Paciente")) {
+						if(Datos.getRole().getRoleName().equals("Paciente")) {
 							
 							Borrar = new File("historial/" + correo + "-historial.txt");
 							Borrar.delete();
@@ -383,17 +389,17 @@ public class ControlerAdministrador implements Initializable{
 	void On_Buscar_Clicked(ActionEvent event){
 		String correo = TextoCorreoPaciente.getText();
 		CuidadoresDisponibles.getItems().clear();
-		Map<String, Persona> map = Main.leerArchivo();
+		Map<String, User> map = Main.leerArchivo();
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		Persona Datos = map.get(correo);
-		if(map.containsKey(correo) && Datos.getRol().equals("Paciente")){
+		User Datos = map.get(correo);
+		if(map.containsKey(correo) && Datos.getRole().getRoleName().equals("Paciente")){
 			String[] DatosC = mapC.get(correo);
 			String CuidadorAct = DatosC[1];
 			Iterator it = map.keySet().iterator();
 			while(it.hasNext()){
 				String Key = (String) it.next();
-				Persona Datos3 = map.get(Key);
-				if(!Key.equals(CuidadorAct) && Datos3.getRol().equals("Cuidador")) {
+				User Datos3 = map.get(Key);
+				if(!Key.equals(CuidadorAct) && Datos3.getRole().getRoleName().equals("Cuidador")) {
 					//System.out.println(CuidadorAct);
 					MenuItem menuItem1 = new MenuItem(Key + " (" + Datos3.getNombre() + ")");
 					menuItem1.setOnAction(new EventHandler<ActionEvent>() {
@@ -421,7 +427,7 @@ public class ControlerAdministrador implements Initializable{
 							GruardarDatos[2] = Datos3.getApellidos();
 							GruardarDatos[3] = sf.format(Datos3.getFecha());
 							
-							GruardarDatos[4] = Datos3.getRol();
+							GruardarDatos[4] = Datos3.getRole().getRoleName();
 							GruardarDatos[5] = Datos3.getDNI();
 							GruardarDatos[6] = Datos3.getTelefono();
 							if(!DatosC3[2].equals("null")){
@@ -437,20 +443,20 @@ public class ControlerAdministrador implements Initializable{
 							GruardarDatos[1] = Datos.getNombre();
 							GruardarDatos[2] = Datos.getApellidos();
 							GruardarDatos[3] = sf.format(Datos.getFecha());
-							GruardarDatos[4] = Datos.getRol();
+							GruardarDatos[4] = Datos.getRole().getRoleName();
 							GruardarDatos[5] = Datos.getDNI();
 							GruardarDatos[6] = Datos.getTelefono();
 							GruardarDatos[7] = Datos3.getCorreo();
 							GruardarDatos[8] = DatosC[2];
 							GruardarDatos[9] = DatosC[3];
 							Main.guardar(correo, GruardarDatos);
-							Persona Datos2 = map.get(CuidadorAct);
+							User Datos2 = map.get(CuidadorAct);
 							GruardarDatos[0] = Datos2.getContrasena();
 							GruardarDatos[1] = Datos2.getNombre();
 							GruardarDatos[2] = Datos2.getApellidos();
 							
 							GruardarDatos[3] = sf.format(Datos2.getFecha());
-							GruardarDatos[4] = Datos2.getRol();
+							GruardarDatos[4] = Datos2.getRole().getRoleName();
 							GruardarDatos[5] = Datos2.getDNI();
 							GruardarDatos[6] = Datos2.getTelefono();
 							GruardarDatos[7] = DatosC2[1];
@@ -475,17 +481,17 @@ public class ControlerAdministrador implements Initializable{
     void On_Previous_Clicked(){
 		
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		String[] c = mapC.get(ControladorLogin.PERSONA.getCorreo());
+		String[] c = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo.getText();
 		if(!c[2].equals("null")) {
 			c[2] = c[2].replace(" ","");
 			String[] Cuidadores = c[2].split("\\|");
 
-			Map<String, Persona> map = Main.leerArchivo();
+			Map<String, User> map = Main.leerArchivo();
 			int l = Cuidadores.length;
 			System.out.println("Pacientes[0] = " + Cuidadores [0]);
 			System.out.println("Numero pacientes " + l);
-			Persona[] Cuidador = new Persona[l];
+			User[] Cuidador = new User[l];
 			int numPac = 0;
 			for(int i = 0; i<l; i++) {
 				System.out.println("Datos paciente " + i + " " + map.get(Cuidadores[i]));
@@ -536,17 +542,17 @@ public class ControlerAdministrador implements Initializable{
     void On_Next_Clicked(){
 
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		String[] c = mapC.get(ControladorLogin.PERSONA.getCorreo());
+		String[] c = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo.getText();
 		if(!c[2].equals("null")) {
 			c[2] = c[2].replace(" ","");
 			String[] Cuidadores = c[2].split("\\|");
 
-			Map<String, Persona> map = Main.leerArchivo();
+			Map<String, User> map = Main.leerArchivo();
 			int l = Cuidadores.length;
 			System.out.println("Pacientes[0] = " + Cuidadores [0]);
 			System.out.println("Numero pacientes " + l);
-			Persona[] Cuidador = new Persona[l];
+			User[] Cuidador = new User[l];
 			int numPac = 0;
 			for(int i = 0; i<l; i++) {
 				System.out.println("Datos paciente " + i + " " + map.get(Cuidadores[i]));

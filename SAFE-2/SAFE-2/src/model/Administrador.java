@@ -3,12 +3,12 @@ package model;
 import java.util.Date;
 import java.util.List;
 
-public class Administrador extends Persona {
+public class Administrador extends User {
 	private List<Long> lstMedicoId;
 
 	public Administrador(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha,
-			String rol, String telefono, List<Long> lstMedicoId) {
-		super(nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
+			Role role, String telefono, List<Long> lstMedicoId) {
+		super(nombre, apellidos, dNI, correo, contrasena, fecha, role, telefono);
 		this.lstMedicoId = lstMedicoId;
 	}
 
