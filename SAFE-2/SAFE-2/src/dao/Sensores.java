@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import controllers.ControlerPaciente;
+import controllers.PacienteController;
 import javafx.scene.chart.XYChart;
 import model.DatosSensor;
 import model.User;
@@ -15,7 +15,7 @@ import model.User;
 public class Sensores{// implements SerialPortEventListener {
 	
 	
-	private ControlerPaciente controlerPaciente;
+	private PacienteController controlerPaciente;
 
 	DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	Calendar cale;
@@ -171,7 +171,7 @@ public class Sensores{// implements SerialPortEventListener {
 	}
 
 	public void setControladorVentanaPrincipalSupervisado(
-			ControlerPaciente controlerPaciente) {
+			PacienteController controlerPaciente) {
 		this.controlerPaciente = controlerPaciente;
 
 	}

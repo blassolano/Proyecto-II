@@ -156,10 +156,14 @@ public class LoginController implements Initializable {
 		try {
 			Stage stageA = (Stage) LoginButton.getScene().getWindow();
 			stageA.close();
-			Parent root = FXMLLoader.load(getClass().getResource("/Familiar/familiar interface.fxml"));
-
-			Scene scene = new Scene(root);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/familiar.fxml"));
+			
+			
 			Stage stage = new Stage();
+			Scene scene = new Scene(loader.load());
+			stage.setScene(scene);
+			FamiliarController familiarController = loader.<FamiliarController>getController();
+			familiarController.initData(user);
 			// BorderPane root = new BorderPane();
 			// Scene scene = new Scene(root,400,400);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -205,34 +209,28 @@ public class LoginController implements Initializable {
 
 	private void openPaciente() {
 		try {
-			ControlerPaciente controlerPaciente = new ControlerPaciente();
+			Stage stageA = (Stage) LoginButton.getScene().getWindow();
+			stageA.close();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paciente.fxml"));
+			
+			
+			Stage stage = new Stage();
+			Scene scene = new Scene(loader.load());
+			stage.setScene(scene);
+			PacienteController controlerPaciente = new PacienteController();
 			controlerPaciente.setConexionYPaciente(user);
 
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/fxml/paciente.fxml"));
-			loader.setController(controlerPaciente);
 
-			Parent root2 = loader.load();
-			Scene secondScene = new Scene(root2);
-
-			Stage newWindow = new Stage();
-
-			newWindow.setTitle("Bienvenido, Bienvenido paciente " + user.getNombre());
-
-			newWindow.setScene(secondScene);
+			stage.setTitle("Bienvenido, Bienvenido paciente " + user.getNombre());
 
 			// secondScene.getStylesheets()
 			// .add(ControladorSupervisorReg.class.getResource("/Estilos/estilos.css").toExternalForm());
 			// newWindow.initModality(Modality.APPLICATION_MODAL);
 
-			newWindow.setMinHeight(580);
-			newWindow.setMinWidth(830);
+			stage.setMinHeight(580);
+			stage.setMinWidth(830);
 
-			newWindow.show();
-
-			Stage stage = (Stage) LoginButton.getScene().getWindow();
-			stage.close();
-
+			stage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

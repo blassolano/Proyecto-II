@@ -23,10 +23,11 @@ public class PacienteDAO {
 		String PACIENTE_TABLE = "CREATE TABLE IF NOT EXISTS `paciente` ("
 				 +" `id` int(20) NOT NULL,"
 				 +" `medicoId` bigint(20) NOT NULL DEFAULT '0',"
-				 +" `pacienteId` bigint(20) NOT NULL DEFAULT '0',"
+				 +" `userId` bigint(20) NOT NULL DEFAULT '0',"
+				 +" `familiarId` bigint(20) NOT NULL DEFAULT '0',"
 				 +" `historial` varchar(1024) DEFAULT NULL,"
 				 +" PRIMARY KEY (`id`),"
-				 +" FOREIGN KEY(pacienteId) REFERENCES user(id)"
+				 +" FOREIGN KEY(userId) REFERENCES user(id)"
 				 +" FOREIGN KEY(medicoId) REFERENCES user(id)"
 				+")"; 
 		// @formatter:on
@@ -44,10 +45,10 @@ public class PacienteDAO {
 
 	public void insert() {
 		// @formatter:off
-		String PACIENTE_INSERT = "INSERT INTO `paciente` (`id`, `medicoId`, `pacienteId`,  `historial`) VALUES\r\n"
-				+ "	(1,'1', '4', 'hi1'),"
-				+ "	(2,'1', '5', 'hi2'),"
-				+ "	(3,'1', '6', 'hi3');";
+		String PACIENTE_INSERT = "INSERT INTO `paciente` (`id`, `medicoId`, `userId`,  `familiarId`, `historial`) VALUES\r\n"
+				+ "	(1,'1', 4, 2, 'hi1'),"
+				+ "	(2,'1', 5, 2, 'hi2'),"
+				+ "	(3,'1', 6, 2, 'hi3');";
 				
 		// @formatter:on
 		Connection connection = Conexion.getConnection();
@@ -72,7 +73,33 @@ public class PacienteDAO {
 			ResultSet result = st.executeQuery();
 			while (result.next()) {
 				String historial = result.getString("historial");
-				long pacienteid = result.getLong("pacienteId");
+				long pacienteid = result.getLong("userId");
+				User user = userDAO.buscarUserId(pacienteid);
+				Paciente paciente = new Paciente(user);
+				paciente.setId(pacienteid);
+				paciente.setHistorial(historial);
+				
+				lstPaciente.add(paciente);
+			}
+			connection.close();
+		} catch (SQLException ex) {
+			System.err.println(ex.getMessage());
+		}
+		return lstPaciente;
+	}
+	
+	public List<Paciente> pacientesDelFamiliar(long idFamiliar){
+		Connection connection = Conexion.getConnection();
+		List<Paciente> lstPaciente = new ArrayList<Paciente>();
+
+		try {
+			PreparedStatement st = connection.prepareStatement("select * from paciente where familiarId = ?");
+			st.setLong(1, idFamiliar);
+
+			ResultSet result = st.executeQuery();
+			while (result.next()) {
+				String historial = result.getString("historial");
+				long pacienteid = result.getLong("userId");
 				User user = userDAO.buscarUserId(pacienteid);
 				Paciente paciente = new Paciente(user);
 				paciente.setId(pacienteid);

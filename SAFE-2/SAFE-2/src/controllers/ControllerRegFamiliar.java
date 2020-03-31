@@ -89,7 +89,7 @@ public class ControllerRegFamiliar implements Initializable{
 	void On_Login_Clicked(ActionEvent event){
 		Stage stageA = (Stage) Hyperlog.getScene().getWindow();
 	    stageA.close();
-	    ControlerPaciente.VentanaPaciente.show();
+	    PacienteController.VentanaPaciente.show();
 		/*try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
 

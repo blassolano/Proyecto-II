@@ -75,7 +75,7 @@ public class ControlerCambC implements Initializable{
 				Map<String, User> map;
 				map = Main.leerArchivo();
 				String correo = loginMail.getText();
-				Paciente D = ControlerPaciente.DatosPaciente(correo);
+				Paciente D = PacienteController.DatosPaciente(correo);
 				String[] Datos = new String[10];
 				User Dat = map.get(correo);
 				Datos[0] = contra1;

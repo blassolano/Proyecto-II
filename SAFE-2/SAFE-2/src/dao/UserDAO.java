@@ -25,7 +25,6 @@ public class UserDAO {
 		String USER_TABLE = "CREATE TABLE IF NOT EXISTS `user` ("
 				 +" `id` int(20) NOT NULL,"
 				 +" `dni` varchar(20) NOT NULL,"
-				 +" `enabled` bit(1) NOT NULL,"
 				 +" `name` varchar(255) DEFAULT NULL,"
 				 +" `surname` varchar(255) DEFAULT NULL,"
 				 +" `email` varchar(255) DEFAULT NULL,"
@@ -48,15 +47,15 @@ public class UserDAO {
 			System.err.println(ex.getMessage());
 		}
 	}
-
+		
 	public void insert() {
-		String USER_INSERT = "INSERT INTO `user` (`id`, `dni`, `enabled`, `name`, `surname`, `email`, `password`, `telephone`, `date`,  `rolId`) VALUES\r\n"
-				+ "	(1,'65342890k', '1', 'blas', 'solano', 'blassolano20@gmail.com', 'blas22', '563241578', datetime('now'), 1),"
-				+ "	(2,'54216889P', '1', 'julio', 'serrano', 'julioserrano20@gmail.com', 'julio22', '523698421', datetime('now'), 2),"
-				+ "	(4,'21365421L', '1', 'claudia', 'pero', 'claudia20@gmail.com', 'claudia22', '231458264', datetime('now'), 3),"
-				+ "	(5,'21365421L', '1', 'pedro', 'oper', 'pedro@gmail.com', 'pedro77', '354268995', datetime('now'), 3),"
-				+ "	(6,'21365421L', '1', 'ramon', 'sincro', 'ramon@gmail.com', 'ramon77', '120345887', datetime('now'), 3),"
-				+ "	(7, '12985637u', '1', 'solange', 'mendez', 'solange20@gmail.com', 'solange25', '782543015', datetime('now'), 4);";
+		String USER_INSERT = "INSERT INTO `user` (`id`, `dni`, `name`, `surname`, `email`, `password`, `telephone`, `date`,  `rolId`) VALUES\r\n"
+				+ "	(1,'65342890k', 'blas', 'solano', 'blassolano20@gmail.com', 'blas22', '563241578', datetime('now'), 1),"
+				+ "	(2,'54216889P', 'julio', 'serrano', 'julioserrano20@gmail.com', 'julio22', '523698421', datetime('now'), 2),"
+				+ "	(4,'21365421L', 'claudia', 'pero', 'claudia20@gmail.com', 'claudia22', '231458264', datetime('now'), 3),"
+				+ "	(5,'21365421L',  'pedro', 'oper', 'pedro@gmail.com', 'pedro77', '354268995', datetime('now'), 3),"
+				+ "	(6,'21365421L',  'ramon', 'sincro', 'ramon@gmail.com', 'ramon77', '120345887', datetime('now'), 3),"
+				+ "	(7, '12985637u', 'solange', 'mendez', 'solange20@gmail.com', 'solange25', '782543015', datetime('now'), 4);";
 
 		Connection connection = Conexion.getConnection();
 		try {
