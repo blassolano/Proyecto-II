@@ -83,6 +83,7 @@ public class UserDAO {
 				String dni = result.getString("dni");
 				String name = result.getString("name");
 				String surname = result.getString("surname");
+				String telefono = result.getString("telephone");
 
 				Date date = null;
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -102,6 +103,7 @@ public class UserDAO {
 				user.setCorreo(correo);
 				user.setContrasena(contrasena);
 				user.setFecha(date);
+				user.setTelefono(telefono);
 				user.setRole(role);
 				System.out.println(user);
 			}

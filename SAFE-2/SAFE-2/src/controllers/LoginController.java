@@ -211,15 +211,14 @@ public class LoginController implements Initializable {
 		try {
 			Stage stageA = (Stage) LoginButton.getScene().getWindow();
 			stageA.close();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/paciente.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Paciente.fxml"));
 			
 			
 			Stage stage = new Stage();
 			Scene scene = new Scene(loader.load());
 			stage.setScene(scene);
-			PacienteController controlerPaciente = new PacienteController();
-			controlerPaciente.setConexionYPaciente(user);
-
+			PacienteController pacienteController = loader.<PacienteController>getController();
+			pacienteController.initData(user);
 
 			stage.setTitle("Bienvenido, Bienvenido paciente " + user.getNombre());
 
