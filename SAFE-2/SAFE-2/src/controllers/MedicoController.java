@@ -175,7 +175,7 @@ public class MedicoController implements Initializable {
 	@FXML
 	private Circle CirculoFall;
 
-	private User user;
+	private Medico medico;
 	private PacienteDAO pacienteDAO;
 	private int index;
 	private List<Paciente> lstPaciente;
@@ -189,10 +189,10 @@ public class MedicoController implements Initializable {
 		index = 0;
 	}
 
-	public void initData(User user) {
+	public void initData(Medico medico) {
 		System.out.println("initdata");
-		this.user = user;
-		lstPaciente = pacienteDAO.buscarPacientes(user.getId());
+		this.medico = medico;
+		lstPaciente = pacienteDAO.buscarPacientes(medico.getId());
 		this.Previous.setDisable(true);
 		postInitData();
 	}
@@ -219,9 +219,9 @@ public class MedicoController implements Initializable {
 
 	private void postInitData() {
 		// Nombre y foto  del medico
-		Nombre.setText(user.getNombre() + " " + user.getApellidos());
+		Nombre.setText(medico.getNombre() + " " + medico.getApellidos());
 		try {
-			File dest = new File("src/Imagen/FotoPerfil" + user.getCorreo() + ".png");
+			File dest = new File("src/Imagen/FotoPerfil" + medico.getCorreo() + ".png");
 			String thePath = dest.toURI().toURL().toExternalForm();
 			Image image = new Image(thePath);
 			Foto.setImage(image);
@@ -236,7 +236,7 @@ public class MedicoController implements Initializable {
 		
 		
 		Map<String, String[]> mapC = Main.leerArchivoClase();
-		String[] p = mapC.get(user.getCorreo());
+		String[] p = mapC.get(medico.getCorreo());
 		Map<String, User> map = Main.leerArchivo();
 
 		// Historial, chat y sensores(MenuButon)
@@ -469,15 +469,21 @@ public class MedicoController implements Initializable {
 	void on_newAccount_Clicked(ActionEvent event) {
 		try {
 			Stage stageA = (Stage) newAccount.getScene().getWindow();
-			VentanaCuidador = stageA;
 			stageA.hide();
-			Parent root = FXMLLoader.load(getClass().getResource("/Cuidador/RegisterPaciente.fxml"));
-			Scene scene = new Scene(root);
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RegisterPaciente.fxml"));
 			Stage stage = new Stage();
+			Scene scene = new Scene(loader.load());
+			stage.setScene(scene);
+			
+			
+			RegisterPacienteController registerPacienteController = loader.<RegisterPacienteController>getController();
+			registerPacienteController.initData(medico);
+			
 			// BorderPane root = new BorderPane();
 			// Scene scene = new Scene(root,400,400);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			stage.setScene(scene);
+		
 			stage.setTitle("SAVE");
 			stage.initStyle(StageStyle.DECORATED);
 			stage.getIcons().add(new Image("/Imagen/logoS.png"));
@@ -493,7 +499,7 @@ public class MedicoController implements Initializable {
 			Stage stageA = (Stage) Nombre.getScene().getWindow();
 			VentanaCuidador = stageA;
 			stageA.hide();
-			Parent root = FXMLLoader.load(getClass().getResource("/Main1/Perfil.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fxml/Perfil.fxml"));
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			// BorderPane root = new BorderPane();
@@ -583,7 +589,7 @@ public class MedicoController implements Initializable {
 			String path = "chat/" + CorreoChat + "-chat.txt";
 			FileWriter fw = new FileWriter(path, true);
 			fw.write(System.lineSeparator());
-			fw.write(user.getNombre());
+			fw.write(medico.getNombre());
 			fw.write("\t");
 			fw.write(timeStamp);
 			fw.write("\t");
@@ -724,6 +730,8 @@ public class MedicoController implements Initializable {
 //			}
 //		}
 	}
+	
+
 
 	@FXML
 	void On_SaveChanges_Clicked() {

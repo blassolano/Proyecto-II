@@ -35,7 +35,7 @@ public class LoginController implements Initializable {
 	public static Medico CUIDADOR = null;
 	public static Familiar FAMILIAR = null;
 	public static Administrador ADMINISTRADOR = null;
-	public UserDAO personaDAO;
+	public UserDAO userDAO;
 
 	@FXML
 	private ResourceBundle resources;
@@ -59,8 +59,7 @@ public class LoginController implements Initializable {
 	private Hyperlink change;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO (don't really need to do anything here).
-		this.personaDAO = new UserDAO();
+		this.userDAO = new UserDAO();
 	}
 	/*
 	 * private void nombre_personaKeyPressed(java.awt.event.KeyEvent evt) {
@@ -75,7 +74,7 @@ public class LoginController implements Initializable {
 		String correointr = loginMail.getText();
 		String contraintr = loginPassword.getText();
 
-		user = personaDAO.buscarUsuarioLogin(correointr, contraintr);
+		user = userDAO.buscarUsuarioLogin(correointr, contraintr);
 		if (user != null) {
 			Role role = user.getRole();
 			String roleName = role.getRoleName().toLowerCase();
@@ -90,7 +89,7 @@ public class LoginController implements Initializable {
 			case "paciente":
 				openPaciente();
 				break;
-			case "admministrador":
+			case "administrador":
 				openAdministrador();
 				break;
 			}
@@ -130,18 +129,20 @@ public class LoginController implements Initializable {
 	}
 
 	private void openAdministrador() {
-		// TODO Auto-generated method stub
 		try {
 			Stage stageA = (Stage) LoginButton.getScene().getWindow();
 			stageA.close();
-			Parent root = FXMLLoader.load(getClass().getResource("/Administrador/administrador interface.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Administrador.fxml"));
 
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(loader.load());
 			Stage stage = new Stage();
 			// BorderPane root = new BorderPane();
 			// Scene scene = new Scene(root,400,400);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage.setScene(scene);
+			AdministradorController administradorController = loader.<AdministradorController>getController();
+			administradorController.initData(user);
+			
 			stage.setTitle("SAVE");
 			stage.initStyle(StageStyle.DECORATED);
 			stage.getIcons().add(new Image("/Imagen/logoS.png"));
@@ -182,13 +183,13 @@ public class LoginController implements Initializable {
 			Stage stageA = (Stage) LoginButton.getScene().getWindow();
 			stageA.close();
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/medico.fxml"));
-			
+			Medico medico = new Medico(user);
 			
 			Stage stage = new Stage();
 			Scene scene = new Scene(loader.load());
 			stage.setScene(scene);
 			MedicoController medicoController = loader.<MedicoController>getController();
-			medicoController.initData(user);
+			medicoController.initData(medico);
 //			String css = this.getClass().getResource("../application.css").toExternalForm();
 //			scene.getStylesheets().add(css);
 			

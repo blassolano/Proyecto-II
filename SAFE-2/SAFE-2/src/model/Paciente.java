@@ -9,13 +9,17 @@ public class Paciente extends User {
 	private List<Familiar> lstFamiliar;
 	private String historial;
 	
+	public Paciente() {
+		
+	}
+	
 	public Paciente(User user) {
-		super(user.getNombre(), user.getApellidos(), user.getDNI(), user.getCorreo(), user.getContrasena(), user.getFecha(), user.getRole(), user.getTelefono());
+		super(user);
 	}
 
-	public Paciente(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role rol,
+	public Paciente(long id, String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role rol,
 			String telefono, Medico medico, String historial) {
-		super(nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
+		super(id, nombre, apellidos, dNI, correo, contrasena, fecha, rol, telefono);
 		this.medico = medico;
 		this.historial = historial;
 	}

@@ -8,10 +8,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import dao.DatosSensorDAO;
+import dao.PacienteDAO;
 import dao.Sensores;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.Main;
 import model.DatosSensor;
+import model.Familiar;
 import model.Paciente;
 import model.User;
 
@@ -245,15 +246,24 @@ public class PacienteController implements Initializable {
 	private ImageView Foto;
 
 	private User user;
+	
+	private SimpleDateFormat sf;
 
 	public XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
 	public int contadorGrafica = 0;
 	private Sensores sensores;
 	private Thread t;
+	private PacienteDAO pacienteDAO;
+	private int index;
+	private List<Familiar> lstFamiliar;
 
 	public void initData(User user) {
 		System.out.println("init data");
 		this.user = user;
+		this.pacienteDAO = new PacienteDAO();
+		this.index =0;
+		this.sf = new SimpleDateFormat("yyyy-MM-dd");
+		this.lstFamiliar = pacienteDAO.familiarPaciente(user.getId());
 		postInit();
 	}
 
@@ -269,12 +279,13 @@ public class PacienteController implements Initializable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-		NombrePaciente.setText(user.getNombre());
-		Apellido1.setText(user.getApellidos());
-		NumTelefono1.setText(user.getTelefono());
-		DNI1.setText(user.getDNI());
-		Correo1.setText(user.getCorreo());
+//
+//		NombrePaciente.setText(user.getNombre());
+//		Apellido1.setText(user.getApellidos());
+//		NumTelefono1.setText(user.getTelefono());
+//		DNI1.setText(user.getDNI());
+//		Correo1.setText(user.getCorreo());
+		mostarDatosFamiliar(0);
 
 		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 		FechaNacimiento1.setText(sf.format(user.getFecha()));
@@ -290,6 +301,12 @@ public class PacienteController implements Initializable {
 			Image image = new Image(DireccionFotoP);
 			FotoPaciente.setImage(image);
 		}
+		
+//		lanzarHiloEscuchadorDeSensores();
+//
+//		recogerSensores(user);
+		
+		
 
 	}
 
@@ -298,11 +315,7 @@ public class PacienteController implements Initializable {
 		// System.load("/Usersâ?©/Suabcâ?©/â?¨Downloadsâ?©/RXTXcomm.jar");
 		// System.setProperty("java.library.path", "/path/to/library");
 		System.out.println("Initialize");
-		lanzarHiloEscuchadorDeSensores();
-
-		// codigo nuevo
-
-		recogerSensores(user);
+		
 
 		// codigo nuevo
 
@@ -708,7 +721,14 @@ public class PacienteController implements Initializable {
 
 	@FXML
 	void On_Previous_Clicked() {
-		Map<String, String[]> mapC = Main.leerArchivoClase();
+		if(index > 0 && index <= lstFamiliar.size()) {
+			index--;
+			this.Next.setDisable(false);
+			mostarDatosFamiliar(index);
+		}else {
+			this.Previous.setDisable(true);
+		}
+		/*Map<String, String[]> mapC = Main.leerArchivoClase();
 		String[] p = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo1.getText();
 		if (!p[2].equals("null")) {
@@ -757,12 +777,21 @@ public class PacienteController implements Initializable {
 				FotoPaciente.setImage(image);
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	@FXML
 	void On_Next_Clicked() {
-		Map<String, String[]> mapC = Main.leerArchivoClase();
+		
+		if(index < lstFamiliar.size() - 1) {
+			index++;
+			this.Previous.setDisable(false);
+			mostarDatosFamiliar(index);
+		}else {
+			this.Next.setDisable(true);
+		}
+		
+		/*Map<String, String[]> mapC = Main.leerArchivoClase();
 		String[] p = mapC.get(user.getCorreo());
 		String CorreoAnt = Correo1.getText();
 		if (!p[2].equals("null")) {
@@ -790,6 +819,17 @@ public class PacienteController implements Initializable {
 				}
 			}
 
+		}*/
+	}
+	
+	private void mostarDatosFamiliar(int index) {
+		if(index >=0 && index < lstFamiliar.size()) {
+			Familiar familiar = lstFamiliar.get(index);
+			NombrePaciente.setText(familiar.getNombre());
+			Apellido1.setText(familiar.getApellidos());
+			NumTelefono1.setText(familiar.getTelefono());
+			DNI1.setText(familiar.getDNI());
+			Correo1.setText(familiar.getCorreo());
 		}
 	}
 

@@ -13,7 +13,7 @@ public class RolDAO {
 	public void createTable() {
 		// @formatter:off
 		String ROLE_TABLE = "CREATE TABLE IF NOT EXISTS `role` (" + 
-				"  `id` int(20) NOT NULL," + 
+				"  `id` int(20) NOT NULL AUTO_INCREMENT," + 
 				"  `role_name` varchar(255) DEFAULT NULL," + 
 				"  PRIMARY KEY (`id`)" + 
 				")";
@@ -31,22 +31,44 @@ public class RolDAO {
 	}
 
 	public void insert() {
+		if (count() == 0) {
 		// @formatter:off
-		String ROL_INSERT = "INSERT INTO `role` (`id`, `role_name`) VALUES\r\n" 
-				+ "	(1, 'Medico'),"
-				+ "	(2, 'Familiar')," 
-				+ "	(3, 'Paciente')," 
-				+ "	(4, 'Administrador')";
+		String ROL_INSERT = "INSERT INTO `role` (`role_name`) VALUES\r\n" 
+				+ "	('Medico'),"
+				+ "	('Familiar')," 
+				+ "	('Paciente')," 
+				+ "	('Administrador')";
 		// @formatter:on
+			Connection connection = Conexion.getConnection();
+			try {
+				Statement stmt = connection.createStatement();
+				stmt.executeUpdate(ROL_INSERT);
+				stmt.close();
+				connection.close();
+			} catch (SQLException ex) {
+				System.err.println(ex.getMessage());
+			}
+		}
+	}
+
+	public int count() {
+		int total = 0;
+		String COUNT_ROLE = "SELECT COUNT(*) as total FROM `role`";
 		Connection connection = Conexion.getConnection();
 		try {
 			Statement stmt = connection.createStatement();
-			stmt.executeUpdate(ROL_INSERT);
+			ResultSet result = stmt.executeQuery(COUNT_ROLE);
+			if (result.next()) {
+				total = result.getInt("total");
+			}
+
 			stmt.close();
 			connection.close();
 		} catch (SQLException ex) {
 			System.err.println(ex.getMessage());
 		}
+
+		return total;
 	}
 
 	public Role findById(int id) {
@@ -59,7 +81,29 @@ public class RolDAO {
 			if (result.next()) {
 				int idRol = result.getInt("id");
 				String roleName = result.getString("role_name");
-				
+
+				role = new Role();
+				role.setId(idRol);
+				role.setRoleName(roleName);
+			}
+		} catch (SQLException ex) {
+			System.err.println(ex.getMessage());
+		}
+
+		return role;
+	}
+
+	public Role findByName(String name) {
+		Role role = null;
+		Connection connection = Conexion.getConnection();
+		try {
+			PreparedStatement st = connection.prepareStatement("select * from role where role_name = ?");
+			st.setString(1, name);
+			ResultSet result = st.executeQuery();
+			if (result.next()) {
+				int idRol = result.getInt("id");
+				String roleName = result.getString("role_name");
+
 				role = new Role();
 				role.setId(idRol);
 				role.setRoleName(roleName);

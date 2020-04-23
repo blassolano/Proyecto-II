@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import constant.Constant;
 import dao.PacienteDAO;
+import dao.PacienteFamiliarDAO;
 import dao.RolDAO;
 import dao.UserDAO;
 import javafx.application.Application;
@@ -72,8 +72,7 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		System.out.println("crear bd");
-		File fdb = new File(Constant.URL_DB);
-		fdb.delete();
+		
 		RolDAO rolDAO= new RolDAO();
 		rolDAO.createTable();
 		rolDAO.insert();
@@ -85,6 +84,11 @@ public class Main extends Application {
 		PacienteDAO pacienteDAO =  new PacienteDAO();
 		pacienteDAO.createTable();
 		pacienteDAO.insert();
+		
+		PacienteFamiliarDAO pacienteFamiliarDAO = new PacienteFamiliarDAO();
+		pacienteFamiliarDAO.createTable();
+		pacienteFamiliarDAO.insert();
+		
 		System.out.println("fin crear bd");
 		
 //		Scanner in = new Scanner(System.in);

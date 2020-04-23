@@ -8,10 +8,14 @@ public class Familiar extends User {
 
 	private long pacienteId;
 	private String gradoControl;
+	
+	public Familiar(User user) {
+		super(user);
+	}
 
-	public Familiar(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha,
+	public Familiar(long id, String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha,
 			Role role, String telefono, long pacienteId, String gradoControl) {
-		super(nombre, apellidos, dNI, correo, contrasena, fecha, role, telefono);
+		super(id, nombre, apellidos, dNI, correo, contrasena, fecha, role, telefono);
 		this.pacienteId = pacienteId;
 		this.gradoControl = gradoControl;
 	}

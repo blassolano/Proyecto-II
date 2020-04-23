@@ -16,10 +16,15 @@ public class User {
 
 	public User() {
 	}
+	
+	public User(User user) {
+		this(user.getId(), user.getNombre(), user.getApellidos(), user.getDNI(), user.getCorreo(), user.getContrasena(), user.getFecha(), user.getRole(), user.getTelefono());
+	}
 
-	public User(String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role role,
+	public User(long id, String nombre, String apellidos, String dNI, String correo, String contrasena, Date fecha, Role role,
 			String telefono) {
 
+		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		DNI = dNI;

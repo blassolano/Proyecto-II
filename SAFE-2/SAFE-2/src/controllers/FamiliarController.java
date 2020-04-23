@@ -155,8 +155,7 @@ public class FamiliarController implements Initializable {
 			e1.printStackTrace();
 		}
 		
-		List<Paciente> lstPaciente = pacienteDAO.pacientesDelFamiliar(user.getId());
-		System.out.println(lstPaciente);
+		
 
 
 		//Datos Paciente

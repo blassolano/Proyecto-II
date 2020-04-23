@@ -72,7 +72,7 @@ public class ControllerRegCuidador implements Initializable{
 	void On_Login_Clicked(ActionEvent event){
 		Stage stageA = (Stage) Hyperlog.getScene().getWindow();
 	    stageA.close();
-	    ControlerAdministrador.VentanaAdministrador.show();
+	    AdministradorController.VentanaAdministrador.show();
 		
 	}
 
