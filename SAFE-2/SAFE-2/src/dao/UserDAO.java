@@ -69,6 +69,34 @@ public class UserDAO {
 			}
 		}
 	}
+	
+	public void update(User user) {
+		// @formatter:off
+		String PACIENTE_UPDATE = "UPDATE user "
+				+"SET name = ?, surname = ?, email = ?, password = ?, telephone = ?, date= ? "
+				+"WHERE id = ?";
+		// @formatter:on
+		Connection connection = Conexion.getConnection();
+		try {
+			
+			java.sql.Date sDate = new java.sql.Date(user.getFecha().getTime());
+			PreparedStatement stmt = connection.prepareStatement(PACIENTE_UPDATE, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, user.getNombre());
+			stmt.setString(2, user.getApellidos());
+			stmt.setString(3, user.getCorreo());
+			stmt.setString(4, user.getContrasena());
+			stmt.setString(5, user.getTelefono());
+			stmt.setDate(6, sDate);
+			
+			stmt.setLong(7, user.getId());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+		} catch (SQLException ex) {
+			System.err.println(ex.getMessage());
+		}
+	}
 
 	public int count() {
 		int total = 0;

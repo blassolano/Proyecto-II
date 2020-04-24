@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -21,10 +15,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MedicoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MedicoController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -36,11 +31,12 @@
                            <children>
                               <BorderPane prefHeight="381.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <bottom>
-                                    <VBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                    <HBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                                        <children>
+                                          <Button mnemonicParsing="false" text="Actualizar" onAction="#on_updateAccount_Clicked"/>
                                           <Button fx:id="newAccount" mnemonicParsing="false" onAction="#on_newAccount_Clicked" text="Add patient" textAlignment="CENTER" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </bottom>
                                  <center>
                                     <HBox alignment="CENTER" prefHeight="382.0" prefWidth="435.0" style="-fx-background-color: #DDDDDD;" BorderPane.alignment="CENTER">
@@ -58,7 +54,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name(s):" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="NombrePaciente" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                      <TextField fx:id="NombrePaciente" />
                                                    </children>
                                                 </HBox>
                                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
@@ -66,7 +62,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Surname(s):" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="Apellido" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                      <TextField fx:id="Apellido" />
                                                    </children>
                                                 </HBox>
                                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
@@ -74,7 +70,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Birth date:" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="FechaNacimiento" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                     <DatePicker fx:id="FechaNacimiento" prefWidth="250.0" />
                                                    </children>
                                                 </HBox>
                                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
@@ -82,7 +78,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="DNI" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                      <TextField fx:id="DNI" />
                                                    </children>
                                                 </HBox>
                                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
@@ -90,7 +86,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="Correo" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                      <TextField fx:id="Correo" />
                                                    </children>
                                                 </HBox>
                                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
@@ -98,7 +94,7 @@
                                                    <children>
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number:" />
                                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-                                                      <Text fx:id="NumTelefono" strokeType="OUTSIDE" strokeWidth="0.0" text="null" />
+                                                      <TextField fx:id="NumTelefono" />
                                                    </children>
                                                 </HBox>
                                              </children>

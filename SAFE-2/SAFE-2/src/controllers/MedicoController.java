@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -22,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -80,10 +84,10 @@ public class MedicoController implements Initializable {
 	private Button newAccount;
 
 	@FXML
-	private Text FechaNacimiento;
+	private DatePicker FechaNacimiento;
 
 	@FXML
-	private Text Correo;
+	private TextField Correo;
 
 	@FXML
 	private RadioButton DetectorCaidas;
@@ -107,16 +111,16 @@ public class MedicoController implements Initializable {
 	private Button Previous;
 
 	@FXML
-	private Text Apellido;
+	private TextField Apellido;
 
 	@FXML
 	private Button OnOff;
 
 	@FXML
-	private Text DNI;
+	private TextField DNI;
 
 	@FXML
-	private Text NombrePaciente;
+	private TextField NombrePaciente;
 
 	@FXML
 	private Text Pulsaciones;
@@ -128,7 +132,7 @@ public class MedicoController implements Initializable {
 	private Text NombrePacChat;
 
 	@FXML
-	private Text NumTelefono;
+	private TextField NumTelefono;
 
 	@FXML
 	private CheckBox DetectorCaidas1;
@@ -182,7 +186,6 @@ public class MedicoController implements Initializable {
 	private SimpleDateFormat sf;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO (don't really need to do anything here).
 		System.out.println("initialize");
 		pacienteDAO = new PacienteDAO();
 		sf = new SimpleDateFormat("yyyy-MM-dd");
@@ -196,16 +199,17 @@ public class MedicoController implements Initializable {
 		this.Previous.setDisable(true);
 		postInitData();
 	}
-	
+
 	private void mostarDatosPaciente(int index) {
-		if(index >=0 && index < lstPaciente.size()) {
+		if (index >= 0 && index < lstPaciente.size()) {
 			Paciente paciente = lstPaciente.get(index);
 			NombrePaciente.setText(paciente.getNombre());
 			Apellido.setText(paciente.getApellidos());
 			NumTelefono.setText(paciente.getTelefono());
 			DNI.setText(paciente.getDNI());
 			Correo.setText(paciente.getCorreo());
-			FechaNacimiento.setText(sf.format(paciente.getFecha()));
+			LocalDate date = LocalDate.parse(sf.format(paciente.getFecha()));
+			FechaNacimiento.setValue(date);
 //			try {
 //				String DireccionFotoP = "Imagen/FotoPerfil" + paciente.getCorreo() + ".png";
 //				System.out.println(DireccionFotoP);
@@ -218,7 +222,7 @@ public class MedicoController implements Initializable {
 	}
 
 	private void postInitData() {
-		// Nombre y foto  del medico
+		// Nombre y foto del medico
 		Nombre.setText(medico.getNombre() + " " + medico.getApellidos());
 		try {
 			File dest = new File("src/Imagen/FotoPerfil" + medico.getCorreo() + ".png");
@@ -233,219 +237,151 @@ public class MedicoController implements Initializable {
 
 		// Muestra los datos del primer paciente
 		mostarDatosPaciente(index);
-		
-		
+
 		Map<String, String[]> mapC = Main.leerArchivoClase();
 		String[] p = mapC.get(medico.getCorreo());
 		Map<String, User> map = Main.leerArchivo();
 
 		// Historial, chat y sensores(MenuButon)
 
-		/*if (p!= null && !p[2].equals("null")) {
-			p[2] = p[2].replace(" ", "");
-			String[] Pacientes = p[2].split("\\|");
-			User[] Paciente = new User[Pacientes.length];
-			for (int i = 0; i < Pacientes.length; i++) {
-				Paciente[i] = map.get(Pacientes[i]);
-				MenuItem menuItem1 = new MenuItem(
-						Pacientes[i] + " (" + Paciente[i].getNombre() + " " + Paciente[i].getApellidos() + ")");
-				int r = i;
-				menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							String path = "historial/" + Pacientes[r] + "-historial.txt";
-							String content;
-							content = readFile(path);
-							historialStreaming.setText(content);
-						}
+		/*
+		 * if (p!= null && !p[2].equals("null")) { p[2] = p[2].replace(" ", "");
+		 * String[] Pacientes = p[2].split("\\|"); User[] Paciente = new
+		 * User[Pacientes.length]; for (int i = 0; i < Pacientes.length; i++) {
+		 * Paciente[i] = map.get(Pacientes[i]); MenuItem menuItem1 = new MenuItem(
+		 * Pacientes[i] + " (" + Paciente[i].getNombre() + " " +
+		 * Paciente[i].getApellidos() + ")"); int r = i; menuItem1.setOnAction(new
+		 * EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent event) { try { String path =
+		 * "historial/" + Pacientes[r] + "-historial.txt"; String content; content =
+		 * readFile(path); historialStreaming.setText(content); }
+		 * 
+		 * catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } try { String DireccionFotoP = "Imagen/FotoPerfil" +
+		 * Pacientes[r] + ".png"; System.out.println(DireccionFotoP); Image image = new
+		 * Image(DireccionFotoP); FotoPacHistorial.setImage(image); } catch (Exception
+		 * e) { e.printStackTrace(); }
+		 * NombrePacHistorial.setText(Paciente[r].getNombre() + " " +
+		 * Paciente[r].getApellidos());
+		 * correoPacHistorial.setText(Paciente[r].getCorreo()); } });
+		 * menuHistorial.getItems().add(menuItem1); menuItem1 = new MenuItem(
+		 * Pacientes[i] + " (" + Paciente[i].getNombre() + " " +
+		 * Paciente[i].getApellidos() + ")"); menuItem1.setOnAction(new
+		 * EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent event) { try { CorreoChat =
+		 * Pacientes[r]; String path = "chat/" + Pacientes[r] + "-chat.txt"; String
+		 * content; content = readFile(path); chatStreaming.setText(content); } catch
+		 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 * try { String DireccionFotoP = "Imagen/FotoPerfil" + Pacientes[r] + ".png";
+		 * System.out.println(DireccionFotoP); Image image = new Image(DireccionFotoP);
+		 * FotoPacChat.setImage(image); } catch (Exception e) { e.printStackTrace(); }
+		 * NombrePacChat.setText(Paciente[r].getNombre() + " " +
+		 * Paciente[r].getApellidos()); } }); menuChat.getItems().add(menuItem1);
+		 * menuItem1 = new MenuItem( Pacientes[i] + " (" + Paciente[i].getNombre() + " "
+		 * + Paciente[i].getApellidos() + ")"); menuItem1.setOnAction(new
+		 * EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent event) {
+		 * 
+		 * // Establecer si estan encendidos o apagados PacienteSensores = Pacientes[r];
+		 * infoPulsometro.getChildren().clear(); try {
+		 * 
+		 * // Leo el fichero al reves
+		 * 
+		 * FileReader fr = new FileReader("sensores/" + Pacientes[r] + "-sensores.txt");
+		 * BufferedReader bf = new BufferedReader(fr); LinkedList<String> list = new
+		 * LinkedList<String>(); String sCadena; while ((sCadena = bf.readLine()) !=
+		 * null) { list.add(sCadena); } Iterator<String> it = list.descendingIterator();
+		 * boolean encontrado = false; while (it.hasNext() && encontrado == false) {
+		 * String Linea = it.next(); System.out.println(Linea); String[] info =
+		 * Linea.split("\\|"); String[] infoC = info[0].split("="); if
+		 * (infoC[0].equals("Caidas")) { encontrado = true; if (infoC[1].equals("true"))
+		 * { DetectorCaidas1.setSelected(true); } else {
+		 * DetectorCaidas1.setDisable(true); } String[] infoP = info[1].split("="); if
+		 * (infoP[1].equals("true")) { OnOfPulsometro1.setSelected(true); } else {
+		 * OnOfPulsometro1.setDisable(true); } }
+		 * 
+		 * } } catch (FileNotFoundException e1) { // TODO Auto-generated catch block
+		 * e1.printStackTrace(); } catch (IOException e) { // TODO Auto-generated catch
+		 * block e.printStackTrace(); }
+		 * 
+		 * if (OnOfPulsometro1.isSelected()) { try { String path = "sensores/" +
+		 * Pacientes[r] + "-sensores.txt"; // Utilizo una lista para leer el fichero
+		 * alreves FileReader fw = new FileReader(path); BufferedReader bf = new
+		 * BufferedReader(fw); LinkedList<String> list = new LinkedList<String>();
+		 * String sCadena; while ((sCadena = bf.readLine()) != null) {
+		 * list.add(sCadena); } Iterator<String> it = list.descendingIterator(); // Creo
+		 * tabla
+		 * 
+		 * final NumberAxis xAxis = new NumberAxis(); final NumberAxis yAxis = new
+		 * NumberAxis(); xAxis.setLabel("Hours ago"); // creating the chart final
+		 * LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis,
+		 * yAxis); XYChart.Series series = new XYChart.Series(); String linea; int cont
+		 * = 0; int valor; while (it.hasNext() && cont < 15) { linea = it.next(); linea
+		 * = linea.replace(" ", ""); try { valor = Integer.parseInt(linea);
+		 * series.getData().add(new XYChart.Data(-cont, valor)); cont++; } catch
+		 * (Exception e) {
+		 * 
+		 * }
+		 * 
+		 * } bf.close(); lineChart.getData().add(series);
+		 * infoPulsometro.getChildren().add(lineChart); } catch (IOException e) { //
+		 * TODO Auto-generated catch block e.printStackTrace(); } } if
+		 * (DetectorCaidas1.isSelected()) { try { String path = "sensores/" +
+		 * Pacientes[r] + "-sensores.txt"; FileReader fw = new FileReader(path);
+		 * 
+		 * // Utilizo una lista para leer el fichero alreves
+		 * 
+		 * BufferedReader bf = new BufferedReader(fw); LinkedList<String> list = new
+		 * LinkedList<String>(); String sCadena; while ((sCadena = bf.readLine()) !=
+		 * null) { list.add(sCadena); } Iterator<String> it = list.descendingIterator();
+		 * String Valor = "n"; while (it.hasNext() && !Valor.equals("false") &&
+		 * !Valor.equals("true")) { Valor = it.next(); if (Valor.equals("false")) {
+		 * 
+		 * CirculoFall.setFill(Color.LIGHTGREEN); } else if (Valor.equals("true")) {
+		 * 
+		 * CirculoFall.setFill(Color.RED); } } bf.close(); } catch (IOException e) { //
+		 * TODO Auto-generated catch block e.printStackTrace(); } } else {
+		 * CirculoFall.setFill(Color.SNOW); } try { String DireccionFotoP =
+		 * "Imagen/FotoPerfil" + Pacientes[r] + ".png";
+		 * System.out.println(DireccionFotoP); Image image = new Image(DireccionFotoP);
+		 * FotoPacSensores.setImage(image); } catch (Exception e) { e.printStackTrace();
+		 * } NombrePacSensores.setText(Paciente[r].getNombre() + " " +
+		 * Paciente[r].getApellidos()); } }); menuSensores.getItems().add(menuItem1); }
+		 * }
+		 */
 
-						catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						try {
-							String DireccionFotoP = "Imagen/FotoPerfil" + Pacientes[r] + ".png";
-							System.out.println(DireccionFotoP);
-							Image image = new Image(DireccionFotoP);
-							FotoPacHistorial.setImage(image);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						NombrePacHistorial.setText(Paciente[r].getNombre() + " " + Paciente[r].getApellidos());
-						correoPacHistorial.setText(Paciente[r].getCorreo());
-					}
-				});
-				menuHistorial.getItems().add(menuItem1);
-				menuItem1 = new MenuItem(
-						Pacientes[i] + " (" + Paciente[i].getNombre() + " " + Paciente[i].getApellidos() + ")");
-				menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						try {
-							CorreoChat = Pacientes[r];
-							String path = "chat/" + Pacientes[r] + "-chat.txt";
-							String content;
-							content = readFile(path);
-							chatStreaming.setText(content);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						try {
-							String DireccionFotoP = "Imagen/FotoPerfil" + Pacientes[r] + ".png";
-							System.out.println(DireccionFotoP);
-							Image image = new Image(DireccionFotoP);
-							FotoPacChat.setImage(image);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						NombrePacChat.setText(Paciente[r].getNombre() + " " + Paciente[r].getApellidos());
-					}
-				});
-				menuChat.getItems().add(menuItem1);
-				menuItem1 = new MenuItem(
-						Pacientes[i] + " (" + Paciente[i].getNombre() + " " + Paciente[i].getApellidos() + ")");
-				menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
+	}
 
-						// Establecer si estan encendidos o apagados
-						PacienteSensores = Pacientes[r];
-						infoPulsometro.getChildren().clear();
-						try {
+	@FXML
+	void on_updateAccount_Clicked(ActionEvent event) {
+		Paciente paciente = lstPaciente.get(index);
+		
 
-							// Leo el fichero al reves
+		String nombre = NombrePaciente.getText();
+		String apellidos = Apellido.getText();
+		String telefono = NumTelefono.getText();
+		String dni = DNI.getText();
+		String email = Correo.getText();
 
-							FileReader fr = new FileReader("sensores/" + Pacientes[r] + "-sensores.txt");
-							BufferedReader bf = new BufferedReader(fr);
-							LinkedList<String> list = new LinkedList<String>();
-							String sCadena;
-							while ((sCadena = bf.readLine()) != null) {
-								list.add(sCadena);
-							}
-							Iterator<String> it = list.descendingIterator();
-							boolean encontrado = false;
-							while (it.hasNext() && encontrado == false) {
-								String Linea = it.next();
-								System.out.println(Linea);
-								String[] info = Linea.split("\\|");
-								String[] infoC = info[0].split("=");
-								if (infoC[0].equals("Caidas")) {
-									encontrado = true;
-									if (infoC[1].equals("true")) {
-										DetectorCaidas1.setSelected(true);
-									} else {
-										DetectorCaidas1.setDisable(true);
-									}
-									String[] infoP = info[1].split("=");
-									if (infoP[1].equals("true")) {
-										OnOfPulsometro1.setSelected(true);
-									} else {
-										OnOfPulsometro1.setDisable(true);
-									}
-								}
+		// creating the instance of LocalDate using the day, month, year info
+		LocalDate localDate = FechaNacimiento.getValue();
 
-							}
-						} catch (FileNotFoundException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+		// local date + atStartOfDay() + default time zone + toInstant() = Date
+		Date fecha = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-						if (OnOfPulsometro1.isSelected()) {
-							try {
-								String path = "sensores/" + Pacientes[r] + "-sensores.txt";
-								// Utilizo una lista para leer el fichero alreves
-								FileReader fw = new FileReader(path);
-								BufferedReader bf = new BufferedReader(fw);
-								LinkedList<String> list = new LinkedList<String>();
-								String sCadena;
-								while ((sCadena = bf.readLine()) != null) {
-									list.add(sCadena);
-								}
-								Iterator<String> it = list.descendingIterator();
-								// Creo tabla
-
-								final NumberAxis xAxis = new NumberAxis();
-								final NumberAxis yAxis = new NumberAxis();
-								xAxis.setLabel("Hours ago");
-								// creating the chart
-								final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-								XYChart.Series series = new XYChart.Series();
-								String linea;
-								int cont = 0;
-								int valor;
-								while (it.hasNext() && cont < 15) {
-									linea = it.next();
-									linea = linea.replace(" ", "");
-									try {
-										valor = Integer.parseInt(linea);
-										series.getData().add(new XYChart.Data(-cont, valor));
-										cont++;
-									} catch (Exception e) {
-
-									}
-
-								}
-								bf.close();
-								lineChart.getData().add(series);
-								infoPulsometro.getChildren().add(lineChart);
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						if (DetectorCaidas1.isSelected()) {
-							try {
-								String path = "sensores/" + Pacientes[r] + "-sensores.txt";
-								FileReader fw = new FileReader(path);
-
-								// Utilizo una lista para leer el fichero alreves
-
-								BufferedReader bf = new BufferedReader(fw);
-								LinkedList<String> list = new LinkedList<String>();
-								String sCadena;
-								while ((sCadena = bf.readLine()) != null) {
-									list.add(sCadena);
-								}
-								Iterator<String> it = list.descendingIterator();
-								String Valor = "n";
-								while (it.hasNext() && !Valor.equals("false") && !Valor.equals("true")) {
-									Valor = it.next();
-									if (Valor.equals("false")) {
-
-										CirculoFall.setFill(Color.LIGHTGREEN);
-									} else if (Valor.equals("true")) {
-
-										CirculoFall.setFill(Color.RED);
-									}
-								}
-								bf.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						} else {
-							CirculoFall.setFill(Color.SNOW);
-						}
-						try {
-							String DireccionFotoP = "Imagen/FotoPerfil" + Pacientes[r] + ".png";
-							System.out.println(DireccionFotoP);
-							Image image = new Image(DireccionFotoP);
-							FotoPacSensores.setImage(image);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						NombrePacSensores.setText(Paciente[r].getNombre() + " " + Paciente[r].getApellidos());
-					}
-				});
-				menuSensores.getItems().add(menuItem1);
-			}
-		}*/
-
+		paciente.setNombre(nombre);
+		paciente.setApellidos(apellidos);
+		paciente.setTelefono(telefono);
+		paciente.setDNI(dni);
+		paciente.setCorreo(email);
+		paciente.setFecha(fecha);
+		
+		pacienteDAO.update(paciente);
+		
+		System.out.println(paciente);
 	}
 
 	@FXML
@@ -470,20 +406,19 @@ public class MedicoController implements Initializable {
 		try {
 			Stage stageA = (Stage) newAccount.getScene().getWindow();
 			stageA.hide();
-			
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RegisterPaciente.fxml"));
 			Stage stage = new Stage();
 			Scene scene = new Scene(loader.load());
 			stage.setScene(scene);
-			
-			
+
 			RegisterPacienteController registerPacienteController = loader.<RegisterPacienteController>getController();
 			registerPacienteController.initData(medico);
-			
+
 			// BorderPane root = new BorderPane();
 			// Scene scene = new Scene(root,400,400);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		
+
 			stage.setTitle("SAVE");
 			stage.initStyle(StageStyle.DECORATED);
 			stage.getIcons().add(new Image("/Imagen/logoS.png"));
@@ -610,11 +545,11 @@ public class MedicoController implements Initializable {
 
 	@FXML
 	void On_Previous_Clicked() {
-		if(index > 0 && index <= lstPaciente.size()) {
+		if (index > 0 && index <= lstPaciente.size()) {
 			index--;
 			this.Next.setDisable(false);
 			mostarDatosPaciente(index);
-		}else {
+		} else {
 			this.Previous.setDisable(true);
 		}
 //		Map<String, String[]> mapC = Main.leerArchivoClase();
@@ -670,16 +605,15 @@ public class MedicoController implements Initializable {
 
 	@FXML
 	void On_Next_Clicked() {
-		
-		if(index < lstPaciente.size() - 1) {
+
+		if (index < lstPaciente.size() - 1) {
 			index++;
 			this.Previous.setDisable(false);
 			mostarDatosPaciente(index);
-		}else {
+		} else {
 			this.Next.setDisable(true);
 		}
-		
-		
+
 //		Map<String, String[]> mapC = Main.leerArchivoClase();
 //		String[] p = mapC.get(user.getCorreo());
 //		String CorreoAnt = Correo.getText();
@@ -730,8 +664,6 @@ public class MedicoController implements Initializable {
 //			}
 //		}
 	}
-	
-
 
 	@FXML
 	void On_SaveChanges_Clicked() {

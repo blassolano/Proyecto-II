@@ -44,6 +44,28 @@ public class PacienteDAO {
 		}
 	}
 
+	public void update(Paciente paciente) {
+		// @formatter:off
+		String PACIENTE_UPDATE = "UPDATE paciente "
+				+"SET name = ? "
+				+"WHERE id ?";
+		// @formatter:on
+		
+		userDAO.update(paciente);
+		/*Connection connection = Conexion.getConnection();
+		try {
+			PreparedStatement stmt = connection.prepareStatement(PACIENTE_UPDATE, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, paciente.getNombre());
+			stmt.setLong(2, paciente.getId());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			connection.close();
+		} catch (SQLException ex) {
+			System.err.println(ex.getMessage());
+		}*/
+	}
+
 	public void insert() {
 		if (count() == 0) {
 			// @formatter:off
